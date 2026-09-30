@@ -11,10 +11,8 @@ source .venv/bin/activate
 python3 -m pip install certbot selenium webdriver zope
 pip install -e .
 
-export AA_USERNAME="your-aa-username"
-export AA_PASSWORD="your-aa-password"
 
-sudo -E .venv/bin/certbot certonly --authenticator dns-aa -d "<your_domain>" -v
+sudo .venv/bin/certbot certonly --authenticator dns-aa -d "<your_domain>" --dns-aa-credentials /path/to/creds.ini
 ```
 
 
