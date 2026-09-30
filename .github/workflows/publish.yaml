@@ -15,6 +15,7 @@ jobs:
       url: https://pypi.org/p/certbot-dns-aa
     permissions:
       id-token: write
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
