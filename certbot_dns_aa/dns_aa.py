@@ -36,8 +36,6 @@ class Authenticator(dns_common.DNSAuthenticator):
         return "Configure your Andrews & Arnold credentials to allow Certbot to automatically manage DNS-01 TXT records."
 
     def _setup_credentials(self):
-        # Fallback to environment variables if no credentials file is passed, 
-        # matching your original script design.
         self.username = os.environ.get("AA_USERNAME")
         self.password = os.environ.get("AA_PASSWORD")
         
@@ -94,7 +92,6 @@ class Authenticator(dns_common.DNSAuthenticator):
             )
             domain_link.click()
 
-            # 4. Input DNS TXT Record Data
             record_type = wait.until(
                 EC.presence_of_element_located((By.NAME, "rectype"))
             )
@@ -118,7 +115,7 @@ class Authenticator(dns_common.DNSAuthenticator):
             record_value.send_keys(Keys.ENTER)
 
             logger.info("Successfully added DNS challenge record.")
-            time.sleep(5)  # Allow form submission to settle
+            time.sleep(5)
 
         except Exception as e:
             logger.error(f"Failed to add DNS record via Selenium: {e}")
@@ -134,8 +131,7 @@ class Authenticator(dns_common.DNSAuthenticator):
         responses = []
         for achall in achalls:
             domain = achall.domain
-            # Extract challenge details
-            validation_name = "_acme-challenge" # adjust based on whether it needs full or relative node
+            validation_name = "_acme-challenge" 
             validation_value = achall.validation(achall.account_key)
             logger.info(f"Validation value: {validation_value}")
             self._perform(domain, validation_name, validation_value)
