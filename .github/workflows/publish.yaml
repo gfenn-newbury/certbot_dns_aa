@@ -1,0 +1,36 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release and publish
+
+jobs:
+  release:
+    name: Release and publish
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/certbot-dns-aa
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.13
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install twine build certbot zope selenium webdriver-manager
+      - name: Build
+        run: |
+          python3 -m build
+      - name: Release
+        uses: softprops/action-gh-release@v3
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+      
