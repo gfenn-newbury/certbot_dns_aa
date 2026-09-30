@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "certbot-dns-aa"
+version = "0.1.0"
+description = "Certbot DNS-01 plugin for Andrews & Arnold using Selenium"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "certbot",
+    "selenium",
+    "webdriver-manager",
+    "zope.interface",
+]
+
+[project.entry-points."certbot.plugins"]
+dns-aa = "certbot_dns_aa.dns_aa:Authenticator"
