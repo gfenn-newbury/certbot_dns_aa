@@ -36,14 +36,26 @@ class Authenticator(dns_common.DNSAuthenticator):
         return "Configure your Andrews & Arnold credentials to allow Certbot to automatically manage DNS-01 TXT records."
 
     def _setup_credentials(self):
-        self.username = os.environ.get("AA_USERNAME")
-        self.password = os.environ.get("AA_PASSWORD")
+        # self.username = os.environ.get("AA_USERNAME")
+        # self.password = os.environ.get("AA_PASSWORD")
         
-        if self.conf("credentials"):
-            pass
+        self.credentials = self._configure_credentials(
+        'credentials',
+        'Andrews & Arnold credentials INI file',
+        {
+            'username': 'A&A control pages username.',
+            'password': 'A&A control pages password.',
+        }
+        )
+        self.username = self.credentials.conf('username')
+        self.password = self.credentials.conf('password')
 
-        if not self.username or not self.password:
-            raise errors.PluginError("A&A Username and Password must be provided via environment variables.")
+    # def _validate_credentials(self, credentials):
+    #     if not credentials.conf('username') or not credentials.conf('password'):
+    #         raise errors.PluginError("Username and password must be set in the credentials file.")
+
+    #     if not self.username or not self.password:
+    #         raise errors.PluginError("A&A Username and Password must be provided via environment variables.")
 
     def _perform(self, domain, validation_name, validation_value):
         self._setup_credentials()
